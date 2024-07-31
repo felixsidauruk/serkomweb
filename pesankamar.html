@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="asset/css/style.css">
+
+  <title>Hotel Sumampir</title>
+
+  <script>
+    // Array harga per malam untuk berbagai tipe kamar
+    const roomTypes = ["Standar", "Deluxe", "Executif"];
+    const roomPrices = [500000, 800000, 1200000];
+
+    // Fungsi untuk memvalidasi form
+    function validateForm() {
+      // Mengambil nilai nomor identitas dari form
+      var identity = document.forms["booking-form"]["nomor_identitas"].value;
+      
+      // Memeriksa apakah panjang nomor identitas adalah 16 dan apakah itu adalah angka
+      if (identity.length !== 16 || isNaN(identity)) {
+        // Menampilkan peringatan jika validasi gagal
+        alert("Isian salah..data harus 16 digit");
+        // Menghentikan pengiriman form
+        return false;
+      }
+      
+      // Mengambil nilai durasi menginap dari form
+      var duration = document.forms["booking-form"]["durasi_menginap"].value;
+      
+      // Memeriksa apakah durasi menginap adalah angka
+      if (isNaN(duration)) {
+        // Menampilkan peringatan jika validasi gagal
+        alert("Durasi menginap harus angka");
+        // Menghentikan pengiriman form
+        return false;
+      }
+
+      // Memeriksa apakah tanggal pemesanan adalah masa depan
+      var bookingDate = new Date(document.forms["booking-form"]["tanggal_pesan"].value);
+      var today = new Date();
+      if (bookingDate < today) {
+        alert("Tanggal pemesanan tidak valid. Harap pilih tanggal masa depan.");
+        return false;
+      }
+
+      // Mengizinkan pengiriman form jika semua validasi berhasil
+      return true;
+    }
+
+    // Fungsi untuk menghitung total pembayaran
+    function calculateTotal() {
+      // Mengambil nilai tipe kamar dari elemen dengan ID 'tipe_kamar'
+      var roomType = document.getElementById('tipe_kamar').value;
+      
+      // Mengambil nilai durasi menginap dari elemen dengan ID 'durasi_menginap'
+      var duration = document.getElementById('durasi_menginap').value;
+      
+      // Memeriksa apakah sarapan termasuk atau tidak dari elemen dengan ID 'termasuk_breakfast'
+      var breakfast = document.getElementById('termasuk_breakfast').checked;
+
+      // Mencari harga per malam berdasarkan tipe kamar
+      var pricePerNight = 0;
+      for (var i = 0; i < roomTypes.length; i++) {
+        if (roomTypes[i] === roomType) {
+          pricePerNight = roomPrices[i];
+          break;
+        }
+      }
+
+      // Menghitung total biaya berdasarkan harga per malam dan durasi menginap
+      var total = pricePerNight * duration;
+      
+      // Menghitung diskon jika durasi menginap lebih dari 3 malam
+      var discount = 0;
+      if (duration > 3) {
+        discount = total * 0.1; // Diskon 10%
+        total *= 0.9; // Mengurangi total dengan diskon 10%
+      }
+      
+      // Menambahkan biaya sarapan jika termasuk
+      if (breakfast) {
+        total += 80000;
+      }
+
+      // Mengatur nilai total pembayaran di elemen dengan ID 'total_bayar'
+      document.getElementById('total_bayar').value = total;
+      
+      // Mengatur nilai diskon di elemen dengan ID 'diskon'
+      document.getElementById('diskon').value = discount;
+    }
+
+    // Fungsi untuk mendapatkan parameter query string dari URL
+    function getQueryParam(param) {
+      let urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Cek status dari query string dan tambahkan opsi kamar secara dinamis
+    window.onload = function() {
+      
+      // Menambahkan opsi kamar secara dinamis menggunakan array roomTypes
+      var selectElement = document.getElementById('tipe_kamar');
+      roomTypes.forEach(function(type) {
+        var option = document.createElement('option');
+        option.value = type;
+        option.text = type;
+        selectElement.add(option);
+      });
+    };
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Hotel</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarCollapse"
+      aria-controls="navbarCollapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Produk </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="daftarharga.html">Daftar Harga</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">Tentang Kami</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="pesankamar.html">Pesan Kamar</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="show.php">Show Data</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container text-center p-5 mt-5">
+  <h3>Form Pesan Kamar</h3>
+</div>
+
+<div class="container">
+  <div class="container mt-2">
+    <form name="booking-form" action="submit_booking.php" method="POST" onsubmit="return validateForm()">
+      <div class="form-group d-flex justify-content-between">
+        <label for="nama_pemesan">Nama Pemesan</label>
+        <input
+          type="text" class="form-control" id="nama_pemesan" name="nama_pemesan" required
+          placeholder="Enter Nama Pemesan"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="jenis_kelamin">Jenis Kelamin</label>
+        <div>
+          <input type="radio" id="laki-laki" name="jenis_kelamin" value="Laki-laki" required> <label class="" for="laki-laki">Laki-laki</label>
+          <input type="radio" id="perempuan" name="jenis_kelamin" value="Perempuan" required> <label for="perempuan">Perempuan</label>
+        </div>
+      </div>
+
+      <div class="form-group d-flex justify-content-between">
+        <label for="nomor_identitas">Nomor Identitas</label>
+        <input
+          type="text" class="form-control" id="nomor_identitas" name="nomor_identitas" required
+          placeholder="Enter Nomor Identitas"
+        />
+      </div>
+
+      <div class="form-group d-flex justify-content-between">
+        <label for="tipe_kamar" id="form-pilih">Tipe Kamar</label>
+        <select class="form-control" id="tipe_kamar" name="tipe_kamar" required>
+          <!-- Opsi kamar akan ditambahkan secara dinamis -->
+        </select>
+      </div>
+
+      <div class="form-group d-flex justify-content-between">
+        <label for="tanggal_pesan">Tanggal Pesan</label>
+        <input
+          type="date" class="form-control" id="tanggal_pesan" name="tanggal_pesan" required
+          placeholder="Enter Tanggal Pesan"
+        />
+      </div>
+
+      <div class="form-group d-flex justify-content-between">
+        <label for="durasi_menginap">Durasi Menginap</label>
+        <input
+          type="number" class="form-control" id="durasi_menginap" name="durasi_menginap" required
+          placeholder="Enter Durasi"
+        />
+      </div>
+
+      <div class="form-group d-flex justify-content-between form-check">
+        <input type="checkbox" class="form-check-input" id="termasuk_breakfast" name="termasuk_breakfast">
+        <label class="form-check-label" for="termasuk_breakfast">Termasuk Breakfast</label>
+      </div>
+
+      <div class="form-group d-flex justify-content-between">
+        <label for="total_bayar">Total Bayar</label>
+        <input type="text" class="form-control" id="total_bayar" name="total_bayar" readonly>
+      </div>
+
+      <div class="form-group" style="display:none">
+        <label for="diskon">Diskon</label>
+        <input type="text" class="form-control" id="diskon" name="diskon" readonly>
+      </div>
+      <div class="d-flex justify-content-between my-4">
+        <button type="button" class="btn btn-primary" onclick="calculateTotal()">Hitung Total Bayar</button>
+        <button type="submit" class="btn btn-success">Simpan</button>
+        <button type="button" class="btn btn-danger" onclick="location.href='index.html'">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

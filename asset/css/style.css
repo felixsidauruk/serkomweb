@@ -1,0 +1,142 @@
+img {
+    height: 250px;
+}
+
+/* market section start */
+
+.market_section {
+    width: 100%;
+    float: left;
+}
+
+.market_taital {
+    width: 100%;
+    float: left;
+    font-size: 40px;
+    color: #060606;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+}
+
+.market_section_2 {
+    width: 100%;
+    float: left;
+    background-color: #ffffff;
+    height: auto;
+    padding: 80px 60px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 40px 10px #ededed;
+    margin-top: 20px;
+}
+
+.market_text {
+    width: 100%;
+    font-size: 28px;
+    color: #060606;
+    font-weight: bold;
+   
+}
+
+.market_text:hover {
+    color: #de6624;
+}
+
+.market_text.active {
+    color: #de6624;
+}
+
+.padding10 {
+    padding-left: 20px;
+}
+
+.dummy_text {
+    width: 100%;
+    font-size: 16px;
+    color: #060606;
+    margin: 0px;
+}
+
+.seemore_bt {
+    width: 170px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    top: -25px;
+}
+
+.seemore_bt a {
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #fefefd;
+    background-color: #474646;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.seemore_bt a:hover {
+    color: #fefefd;
+    background-color: #de6624;
+}
+
+
+/* market section end */
+
+
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* Jarak antara setiap form-group */
+  }
+  
+  .form-group label {
+    width: 200px; /* Lebar label */
+  }
+  
+  .form-group input, .form-group select {
+    flex: 1;
+  }
+  
+  #form-pilih {
+    width: 200px; /* Lebar label untuk tipe kamar */
+  }
+  
+  .form-check-label {
+    margin-left: 10px;
+  }
+  
+  @media (max-width: 1200px) {
+    #form-pilih {
+      width: 755px;
+    }
+  }
+  
+  @media (max-width: 991px) {
+    .form-group label {
+      width: 250px; /* Lebar label */
+    }
+  
+    #form-pilih {
+      width: 425px;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .form-group {
+      flex-direction: column; /* Mengubah tata letak menjadi satu kolom pada perangkat seluler */
+      align-items: stretch; /* Memastikan elemen-elemen memanjang sepenuhnya */
+    }
+  
+    .form-group label {
+      width: auto; /* Lebar label otomatis agar responsif pada perangkat seluler */
+      margin-bottom: 5px; /* Jarak antar form-group pada perangkat seluler */
+    }
+  }
+  
+  .d-flex.justify-content-between .btn {
+    margin: 0 5px;
+  }
+  
