@@ -23,6 +23,6 @@ Mengembangkan system pemesanan kamar hotel sederhana
 ## Installasi
 
 1. Install Xampp
-2. Remote Project : https://github.com/MariaYemisuMawasCinta/Serkom-Maria
+2. Remote Project : https://github.com/felixsidauruk/serkomweb
 3. Extract di halaman xampp/htdocs (Sesuaikan dengan penyimpanan xampp anda)
 4. import file serkom.sql di http://localhost/phpmyadmin/
